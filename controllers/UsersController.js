@@ -21,7 +21,10 @@ class UsersController {
     const result = await usersCollection.insertOne(newUser);
     const userId = result.insertedId;
 
-    return res.status(201).json({ userId, email });
+    return res.status(201).json({
+      id: userId,
+      email,
+    });
   }
 }
 
