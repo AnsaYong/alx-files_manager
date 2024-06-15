@@ -7,7 +7,7 @@ const waitConnection = () => new Promise((resolve, reject) => {
       i += 1;
       if (i >= 10) {
         reject();
-      } else if(!dbClient.isAlive()) {
+      } else if (!dbClient.isAlive()) {
         repeatFct();
       } else {
         resolve();
