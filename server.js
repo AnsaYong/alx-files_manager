@@ -4,6 +4,9 @@ const routes = require('./routes/index');
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Set up the Express to parse JSOn request body
+app.use(express.json());
+
 // Load all routes from routes/index.js
 app.use('/', routes);
 

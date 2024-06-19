@@ -1,6 +1,6 @@
 const sha1 = require('sha1');
-const dbClient = require('../utils/db');
 const redisClient = require('../utils/redis');
+const dbClient = require('../utils/db');
 
 class UsersController {
   static async postNew(req, res) {
