@@ -2,12 +2,14 @@
 
 const fs = require('fs');
 const path = require('path');
+const Queue = require('bull/lib/queue');
 const { v4: uuidv4 } = require('uuid');
 const { ObjectId } = require('mongodb');
 const mime = require('mime-types');
 const dbClient = require('../utils/db');
 const redisClient = require('../utils/redis');
-// const { fileQueue } = require('../worker');
+
+const fileQueue = new Queue('fileQueue');
 
 class FilesController {
   static async postUpload(req, res) {
@@ -81,6 +83,12 @@ class FilesController {
     const result = await filesCollection.insertOne(fileObject);
 
     const { _id, ...fileWithoutId } = result.ops[0];
+
+    if (type === 'image') {
+      // Enqueue image processing
+      fileQueue.add({ userId, fileId: _id.toString() });
+    }
+
     return res.status(201).json({ ...fileWithoutId, id: _id.toString() });
   }
 
